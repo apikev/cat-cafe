@@ -34,6 +34,10 @@ class Api::CatsController < ApplicationController
     render json: { message: 'Cat Released'}
   end
 
+  def randomcats 
+    render json: Cat.all.sample 
+  end
+
   private 
     def cat_params
       params.require(:cat).permit(:name, :breed, :registry, :avatar)

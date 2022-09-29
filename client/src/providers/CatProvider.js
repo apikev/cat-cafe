@@ -8,6 +8,7 @@ export const CatConsumer = CatContext.Consumer;
 
 const CatProvider = ({ children }) => {
   const [cats, setCats] = useState([])
+  const [randomCat, setRandomCat] = useState(null)
   const [errors, setErrors] = useState(null)
   const navigate = useNavigate()
 
@@ -66,6 +67,19 @@ const CatProvider = ({ children }) => {
       })
   }
 
+  const getRandomCat = () => {
+    axios.get('/api/randomcat')
+      .then(res => {
+        setRandomCat(res.data)
+      })
+      .catch(err => {
+        setErrors({ 
+          variant: 'danger',
+          msg: err.response.data.errors[0]
+        })
+      })
+  }
+
   return (
     <CatContext.Provider value={{
       cats, 
@@ -74,7 +88,9 @@ const CatProvider = ({ children }) => {
       getAllCats,
       addCat,
       updateCat, 
-      deleteCat,  
+      deleteCat, 
+      randomCat, 
+      getRandomCat, 
     }}>
       { children }
     </CatContext.Provider>
